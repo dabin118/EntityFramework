@@ -1155,6 +1155,9 @@ namespace Microsoft.EntityFrameworkCore.Query
             queryModel.TransformExpressions(typeIsExpressionTranslatingVisitor.Visit);
 
             base.OptimizeQueryModel(queryModel, asyncQuery);
+
+            // Second pass to process all the TypeIs operators introduced during optimization (e.g. in nav rewrite)
+            queryModel.TransformExpressions(typeIsExpressionTranslatingVisitor.Visit);
         }
 
         /// <summary>
