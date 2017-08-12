@@ -15,17 +15,15 @@ using Xunit;
 using Xunit.Abstractions;
 
 // ReSharper disable AccessToDisposedClosure
-
 // ReSharper disable InconsistentNaming
 namespace Microsoft.EntityFrameworkCore.Query
 {
     public class AsyncSimpleQuerySqlServerTest : AsyncSimpleQueryTestBase<NorthwindQuerySqlServerFixture<NoopModelCustomizer>>
     {
+        // ReSharper disable once UnusedParameter.Local
         public AsyncSimpleQuerySqlServerTest(NorthwindQuerySqlServerFixture<NoopModelCustomizer> fixture, ITestOutputHelper testOutputHelper)
             : base(fixture)
         {
-            //#9074
-            Fixture.TestStore.CloseConnection();
             fixture.TestSqlLoggerFactory.Clear();
             //fixture.TestSqlLoggerFactory.SetTestOutputHelper(testOutputHelper);
         }
@@ -197,6 +195,7 @@ namespace Microsoft.EntityFrameworkCore.Query
             using (var context = CreateContext())
             {
                 await context.Customers.ForEachAsync(
+                    // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                     c => { context.Orders.Where(o => o.CustomerID == c.CustomerID).ToList(); });
             }
         }
